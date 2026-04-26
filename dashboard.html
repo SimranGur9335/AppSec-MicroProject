@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Vulnerable Login System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="brand-icon">V</div>
+            <div class="brand-text-wrapper">
+                <span class="brand-name">Vulnerable Login System</span>
+                <span class="brand-sub">Security Lab Environment</span>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="login.html">LOGIN.HTML</a>
+            <a href="signup.html">SIGNUP.HTML</a>
+            <a href="dashboard.html" class="active">DASHBOARD.HTML</a>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Vulnerability Matrix</h3>
+                <ul class="vuln-list">
+                    <li class="vuln-item"><div class="dot red"></div>XSS Injection Vector</li>
+                    <li class="vuln-item"><div class="dot red"></div>Plaintext Passwords</li>
+                    <li class="vuln-item"><div class="dot orange"></div>Broken Auth Flow</li>
+                    <li class="vuln-item"><div class="dot yellow"></div>Insecure Storage</li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3>Learning Objectives</h3>
+                <p class="sidebar-note">1. Craft an alert() payload<br>2. Inspect LocalStorage keys<br>3. Bypass auth checks</p>
+            </div>
+            <div class="sidebar-quote">
+                "The lack of sanitization allows raw HTML & JS strings to be executed by the browser rendering engine."
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="container" style="max-width: 800px;">
+                <div class="dashboard-card">
+                    <div class="dashboard-header">
+                        <h1 id="welcomeMessage">Welcome, guest!</h1>
+                        <button id="logoutBtn" class="btn-secondary">Logout</button>
+                    </div>
+                    
+                    <section class="content">
+                        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                            <div style="flex: 1; min-width: 250px;">
+                                <h2>User Stats</h2>
+                                <p style="margin: 10px 0;">Status: <span class="badge">Authenticated</span></p>
+                                <p style="font-size: 14px; color: #64748b;">This environment allows you to test common vulnerabilities in a controlled lab setting.</p>
+                            </div>
+                            
+                            <div style="flex: 1; min-width: 250px;">
+                                <div class="dashboard-vuln-info">
+                                    <h3>Security Warning</h3>
+                                    <p style="font-size: 12px; margin-bottom: 10px;">This dashboard is intentionally insecure. Try the following:</p>
+                                    <ul>
+                                        <li><strong>Stored XSS:</strong> Sign up with a username like <code>&lt;script&gt;alert('XSS!')&lt;/script&gt;</code></li>
+                                        <li><strong>Session Hijacking:</strong> Look at <code>localStorage</code> in console.</li>
+                                        <li><strong>Plaintext storage:</strong> Users are stored as raw text.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+
+            <div class="console-monitor">
+                <div class="console-header">
+                    <div class="console-title">
+                        <span class="console-label">LocalStorage Console</span>
+                        <span class="live-badge">LIVE MONITORING</span>
+                    </div>
+                    <div class="console-dots">
+                        <div class="console-dot"></div>
+                        <div class="console-dot"></div>
+                        <div class="console-dot"></div>
+                    </div>
+                </div>
+                <div class="console-content">
+                    <div class="log-blue">// Current State in window.localStorage</div>
+                    <div id="consoleLog" class="log-slate">
+                        [LIVE] Listening for storage events...
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Inline script to handle direct dashboard logic
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentUser = localStorage.getItem('currentUser');
+            if (!currentUser) {
+                window.location.href = 'login.html';
+                return;
+            }
+            
+            // INTENTIONALLY VULNERABLE: Using innerHTML allows XSS
+            document.getElementById('welcomeMessage').innerHTML = `Welcome, ${currentUser}!`;
+        });
+
+        // Simple console log simulator for the UI
+        function updateConsole() {
+            const log = document.getElementById('consoleLog');
+            if (!log) return;
+            const users = localStorage.getItem('users') || '[]';
+            const current = localStorage.getItem('currentUser') || 'null';
+            log.innerHTML = `
+                <div class="log-slate">[${new Date().toLocaleTimeString()}] GET "users" -> ${users}</div>
+                <div class="log-slate">[${new Date().toLocaleTimeString()}] GET "currentUser" -> ${current}</div>
+                <div class="log-white mt-3">// Alert: Rendering component with unescaped data: "${current}"</div>
+            `;
+        }
+        setInterval(updateConsole, 2000);
+        updateConsole();
+    </script>
+</body>
+</html>

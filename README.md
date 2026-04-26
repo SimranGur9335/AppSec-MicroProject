@@ -1,11 +1,35 @@
-<div align="center">
+# Vulnerable Login System (Security Testing Project)
 
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
+This is a simple web application created for learning and demonstrating basic web security vulnerabilities.
 
-  <h1>Built with AI Studio</h2>
+## Features
 
-  <p>The fastest path from prompt to production with Gemini.</p>
+* User Signup & Login
+* Dashboard with user greeting
+* LocalStorage-based authentication
 
-  <a href="https://aistudio.google.com/apps">Start building</a>
+## Purpose
 
-</div>
+This project is intentionally vulnerable and is used for:
+
+* Security Testing Practice
+* Demonstrating OWASP Top 10 vulnerabilities
+
+## Vulnerabilities Included
+
+* Cross-Site Scripting (XSS)
+* Broken Authentication
+* No Input Validation
+* No Rate Limiting
+* Insecure Storage (plain text passwords)
+
+## Tech Stack
+
+* HTML
+* CSS
+* JavaScript
+
+## Note
+
+This project is for educational purposes only.
+Do NOT use in production.

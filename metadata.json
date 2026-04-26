@@ -1,0 +1,6 @@
+{
+  "name": "Vulnerable Login System",
+  "description": "A simple security testing project intentionally built with common web vulnerabilities like XSS and insecure storage for educational purposes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": []
+}

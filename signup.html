@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Vulnerable Login System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <div class="brand-icon">V</div>
+            <div class="brand-text-wrapper">
+                <span class="brand-name">Vulnerable Login System</span>
+                <span class="brand-sub">Security Lab Environment</span>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="login.html">LOGIN.HTML</a>
+            <a href="signup.html" class="active">SIGNUP.HTML</a>
+            <a href="dashboard.html">DASHBOARD.HTML</a>
+        </div>
+    </nav>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3>Vulnerability Matrix</h3>
+                <ul class="vuln-list">
+                    <li class="vuln-item"><div class="dot red"></div>XSS Injection Vector</li>
+                    <li class="vuln-item"><div class="dot red"></div>Plaintext Passwords</li>
+                    <li class="vuln-item"><div class="dot orange"></div>Broken Auth Flow</li>
+                    <li class="vuln-item"><div class="dot yellow"></div>Insecure Storage</li>
+                </ul>
+            </div>
+            <div class="sidebar-section">
+                <h3>Learning Objectives</h3>
+                <p class="sidebar-note">1. Craft an alert() payload<br>2. Inspect LocalStorage keys<br>3. Bypass auth checks</p>
+            </div>
+            <div class="sidebar-quote">
+                "The lack of sanitization allows raw HTML & JS strings to be executed by the browser rendering engine."
+            </div>
+        </aside>
+
+        <main class="main-content">
+            <div class="container">
+                <div class="form-card">
+                    <div class="card-progress" style="width: 50%"></div>
+                    <h1>Create Account</h1>
+                    <p class="subtitle">Join our system and explore vulnerabilities.</p>
+                    
+                    <!-- Signup Form -->
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <label>Username</label>
+                            <input type="text" id="username" placeholder="Choose a username" required>
+                        </div>
+                        <div class="form-group">
+                            <div class="label-row">
+                                <label>Password</label>
+                                <span class="label-badge">No Hashing Applied</span>
+                            </div>
+                            <input type="password" id="password" placeholder="Create a password" required>
+                        </div>
+                        <button type="submit" class="btn-primary">SIGN UP</button>
+                    </form>
+                    
+                    <p class="footer-link">Already have an account? <a href="login.html">Login</a></p>
+                    
+                    <div id="message" class="message"></div>
+                </div>
+            </div>
+
+            <div class="console-monitor">
+                <div class="console-header">
+                    <div class="console-title">
+                        <span class="console-label">LocalStorage Console</span>
+                        <span class="live-badge">LIVE MONITORING</span>
+                    </div>
+                    <div class="console-dots">
+                        <div class="console-dot"></div>
+                        <div class="console-dot"></div>
+                        <div class="console-dot"></div>
+                    </div>
+                </div>
+                <div class="console-content">
+                    <div class="log-blue">// Current State in window.localStorage</div>
+                    <div id="consoleLog" class="log-slate">
+                        [LIVE] Listening for account creation...
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script src="script.js"></script>
+    <script>
+        // Simple console log simulator for the UI
+        function updateConsole() {
+            const log = document.getElementById('consoleLog');
+            if (!log) return;
+            const users = localStorage.getItem('users') || '[]';
+            const current = localStorage.getItem('currentUser') || 'null';
+            log.innerHTML = `
+                <div class="log-slate">[${new Date().toLocaleTimeString()}] GET "users" -> ${users}</div>
+                <div class="log-slate">[${new Date().toLocaleTimeString()}] GET "currentUser" -> ${current}</div>
+                <div class="log-red mt-3">// Alert: Insecure storage event detected</div>
+            `;
+        }
+        setInterval(updateConsole, 2000);
+        updateConsole();
+    </script>
+</body>
+</html>
